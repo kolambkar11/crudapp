@@ -46,7 +46,7 @@ const ViewPage = () => {
 
   return (
     <div>
-      <h1 className="text-center mb-4 text-2xl font-bold ">View Phonebook</h1>
+      <h1 className="text-center my-4 text-2xl font-bold ">View Phonebook</h1>
 
       <Table className="w-1/2 mx-auto border">
         <TableCaption>Phone Book</TableCaption>
