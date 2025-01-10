@@ -4,14 +4,6 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { useRouter } from "next/router";
-
-type resultProps = {
-  id: number;
-  name: string;
-  email: string;
-  contact: string;
-};
 
 const Create = () => {
   const [name, setName] = useState("");
