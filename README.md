@@ -38,3 +38,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 use mock api
 collection name: crudapp
 {/_ online api crudapp _/}
+
+make different routes for
+create, read, update, delete.
