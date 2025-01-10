@@ -32,7 +32,7 @@ export default function Home() {
   const handleAdd = async () => {
     // add data to mockapi ap
     try {
-      await axios.post(
+      const response = await axios.post(
         `https://675bc38f9ce247eb19374d66.mockapi.io/nco/crudapp`,
         {
           name,
@@ -40,7 +40,10 @@ export default function Home() {
           contact,
         }
       );
-      setapiData((prev) => prev.filter((item) => item.id !== id));
+      setapiData((prev) => [...prev, response.data]); // Update UI locally
+      setName("");
+      setEmail("");
+      setContact("");
     } catch (error) {
       console.log("Error ", error);
     }
@@ -86,8 +89,8 @@ export default function Home() {
 
   const handleEdit = (id: number) => {
     const dt = apiData.filter((item) => item.id === id);
-    console.log(typeof dt[0].id);
-    console.log(dt);
+    // console.log(typeof dt[0].id);
+    // console.log(dt);
     setId(dt[0].id);
     setName(dt[0].name);
     setEmail(dt[0].email);
@@ -127,6 +130,7 @@ export default function Home() {
           value={name}
         />
         <Input
+          type="number"
           placeholder="Enter Contact"
           onChange={(e) => setContact(e.target.value)}
           value={contact}
