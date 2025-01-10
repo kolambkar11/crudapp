@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Edit2Icon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
+import Datatable from "../components/Datatable";
 
 type resultProps = {
   id: number;
@@ -48,6 +49,7 @@ const ViewPage = () => {
     <div>
       <h1 className="text-center my-4 text-2xl font-bold ">View Phonebook</h1>
 
+      {/* <Datatable apiData={apiData} /> */}
       <Table className="w-1/2 mx-auto border">
         <TableCaption>Phone Book</TableCaption>
         <TableHeader>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 type resultProps = {
   id: number;
@@ -14,6 +15,7 @@ type resultProps = {
 };
 
 const Update = () => {
+  const { register, handleSubmit } = useForm();
   const [id, setId] = useState(1);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,9 +53,12 @@ const Update = () => {
   }, []);
 
   const handleUpdate = async () => {
+    console.log(
+      `https://675bc38f9ce247eb19374d66.mockapi.io/nco/crudapp/${params.id}`
+    );
     try {
       await axios.put(
-        `https://675bc38f9ce247eb19374d66.mockapi.io/nco/crudapp/${id}`,
+        `https://675bc38f9ce247eb19374d66.mockapi.io/nco/crudapp/${params.id}`,
         {
           id,
           name,

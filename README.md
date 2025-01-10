@@ -41,3 +41,7 @@ collection name: crudapp
 
 make different routes for
 create, read, update, delete.
+
+use react form implemented on create
+use zod validations
+integrate all the states in single usestate.
