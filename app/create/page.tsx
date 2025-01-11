@@ -1,51 +1,52 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Header from "../components/Header";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface IFormInput {
-  name: string;
-  contact: number;
-  email: string;
-}
+// Define the Zod schema
+const phoneRegex = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+);
+console.log(z);
+const pbSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters!").max(255),
+  contact: z.string().regex(phoneRegex, "Invalid phone number!"),
+  email: z.string().email("Invalid email format!").min(3).max(255),
+});
+
+type PbSchemaType = z.infer<typeof pbSchema>;
 
 const Create = () => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
-  } = useForm<IFormInput>();
+    formState: { errors, isValid },
+    reset,
+  } = useForm<PbSchemaType>({
+    resolver: zodResolver(pbSchema),
+  });
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
-
-  const handleAdd = async () => {
-    // alert(1); check if the btn is clicked or not
-    // add data to mockapi ap
+  const handleAdd = async (data: PbSchemaType) => {
     try {
       const response = await axios.post(
         `https://675bc38f9ce247eb19374d66.mockapi.io/nco/crudapp`,
-        {
-          name,
-          email,
-          contact,
-        }
+        data
       );
-      if (response.status === 201) {
-        alert("Successs");
-      } else {
-        alert("error");
-      }
 
-      setName("");
-      setEmail("");
-      setContact("");
+      if (response.status === 201) {
+        alert("Success");
+        reset();
+      } else {
+        alert("Error");
+      }
     } catch (error) {
-      console.log("Error ", error);
+      console.log("Error:", error);
     }
   };
 
@@ -53,58 +54,50 @@ const Create = () => {
     <div className="p-4">
       <Header />
       <form onSubmit={handleSubmit(handleAdd)}>
-        <div className="flex gap-4 justify-around p-4 ">
+        <div className="flex gap-4 justify-around p-4">
           <div className="w-full">
             <Input
-              {...register("name", { required: "Name is required" })}
+              {...register("name")}
               placeholder="Enter Name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
               className="w-full"
             />
-            {errors.name?.type === "required" && (
+            {errors.name && (
               <p role="alert" className="text-red-400">
-                {errors.name?.message}
+                {errors.name.message}
               </p>
             )}
           </div>
           <div className="w-full">
             <Input
-              {...register("contact", {
-                required: "Contact is Required",
-              })}
-              type="number"
+              {...register("contact")}
+              type="text"
               placeholder="Enter Contact"
-              onChange={(e) => setContact(e.target.value)}
-              value={contact}
+              className="w-full"
             />
-            {errors.contact?.type === "required" && (
+            {errors.contact && (
               <p role="alert" className="text-red-400">
-                {errors.contact?.message}
+                {errors.contact.message}
               </p>
             )}
           </div>
           <div className="w-full">
             <Input
-              {...register("email", {
-                required: "Email is Required",
-              })}
+              {...register("email")}
               placeholder="Enter Email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
               className="w-full"
             />
-            {errors.email?.type === "required" && (
+            {errors.email && (
               <p role="alert" className="text-red-400">
-                {errors.email?.message}
+                {errors.email.message}
               </p>
             )}
           </div>
         </div>
-        <div className="flex justify-around p-4 ">
+        <div className="flex justify-around p-4">
           <Button
             type="submit"
             className="me-3 bg-blue-400 text-dark hover:text-white"
+            disabled={!isValid}
           >
             Add Data
           </Button>

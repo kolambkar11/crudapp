@@ -45,3 +45,6 @@ create, read, update, delete.
 use react form implemented on create
 use zod validations
 integrate all the states in single usestate.
+
+email @ and .com
+contact 10 digits
